@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mediarecorder</title>
+</head>
+<body>
+    <button id="record">record</button>
+<script>
+    let bt=document.querySelector("#record");
+    let recordstate=false;
+    let chunks=[];
+    bt.addEventListener("click",function(){
+        if(mediaRecord!=undefined){
+         if(recordstate==false){
+             recordstate=true;
+             mediaRecord.start();
+             bt.innerText="recording";
+         }else{
+             recordstate=false;
+             mediaRecord.stop();
+             bt.innerText="record";
+         }
+        }
+    })
+    let mediaRecord;
+    let constraints={video:true,audio:true};
+    navigator.mediaDevices.getUserMedia(constraints).then(function(mediastream){
+      mediaRecord =new MediaRecorder(mediastream);
+      mediaRecord.ondataavailable=function(e){
+          chunks.push(e.data);
+      }
+      mediaRecord.onstop=function(){
+          let blob=new Blob(chunks,{type:"video/mp4"});
+          chunks=[];
+          let bloburl=URL.createObjectURL(blob);
+          var link=document.createElement("a");
+          link.href=bloburl;
+          link.download="video.mp4";
+          link.click();
+          link.remove();
+
+      }
+    }).catch(function(err){
+        console.log(err);
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>audiocam</title>
+    
+</head>
+<body>
+    <video controls autoplay></video>
+    <audio controls autoplay></audio>
+    <script>
+        let bt=document.querySelector(".bt");
+         bt.addEventListener("click",function(){
+        if(mediaRecord!=undefined){
+         if(recordstate==false){
+             recordstate=true;
+             mediaRecord.start();
+             bt.innerText="recording";
+         }else{
+             recordstate=false;
+             mediaRecord.stop();
+             bt.innerText="record";
+         }
+        }
+    })
+        let videoplayer=document.querySelector('video');
+        let audioplayer=document.querySelector('audio');
+        let constraints={video:true,audio:true};
+        navigator.mediaDevices.getUserMedia(constraints).then(function(meadiastream){
+            audioplayer.srcObject=meadiastream;
+            videoplayer.srcObject=meadiastream;
+        }).catch(function(err){
+            console.log(err);
+        })
+    </script>
+</body>
+</html>
