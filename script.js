@@ -6,6 +6,7 @@ window.addEventListener('resize',function(){
     videoplayer.height=window.height;
     videoplayer.width=window.width;
 })
+videoplayer.controls=false;
 let constrains={video:true,audio:true};
 let activestate=false;
 recording.addEventListener("click",function(){
